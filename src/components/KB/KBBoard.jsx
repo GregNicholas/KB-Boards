@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import BoardInput from "../BoardInput/BoardInput.jsx";
+import Stage from "../Stage/Stage.jsx"
 import "./KBBoard.css";
 
 const KBBoard = () => {
@@ -60,59 +61,20 @@ const KBBoard = () => {
         updateNewTaskField={updateNewTaskField}
         createTask={createTask}
       />
-
-      <div>
-        {stagesTasks.map((tasks, i) => {
-          return (
-            <div key={`${i}`}>
-              <div>
-                <h4>{stages[i]}</h4>
-                <ul>
-                  {tasks.map((task, index) => {
-                    return (
-                      <li key={`${i}${index}`}>
-                        <div>
-                          <span
-                            data-testid={`${task.name
-                              .split(" ")
-                              .join("-")}-name`}
-                          >
-                            {task.name}
-                          </span>
-                          <div>
-                            {task.stage > 0 && (
-                              <button
-                                onClick={() =>
-                                  handleMoveBack(task.name, task.stage)
-                                }
-                                disabled={task.stage < 1}
-                              >
-                                <i>arrow_back</i>
-                              </button>
-                            )}
-                            {task.stage < stages.length - 1 && (
-                              <button
-                                onClick={() =>
-                                  handleMoveForward(task.name, task.stage)
-                                }
-                                disabled={task.stage >= stages.length - 1}
-                              >
-                                <i>arrow_forward</i>
-                              </button>
-                            )}
-                            <button onClick={() => handleDelete(task.name)}>
-                              <i>delete</i>
-                            </button>
-                          </div>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </div>
-            </div>
-          );
-        })}
+      <div className="container">
+        <div className="stage-container">
+          {stagesTasks.map((tasks, i) => {
+            return (
+              <Stage 
+                stages={stages} 
+                tasks={tasks} i={i} 
+                handleMoveForward={handleMoveForward} 
+                handleDelete={handleDelete} 
+                handleMoveBack={handleMoveBack}
+              />
+            );
+          })}
+        </div>
       </div>
     </div>
   );

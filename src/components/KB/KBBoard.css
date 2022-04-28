@@ -1,4 +1,16 @@
 h4 {
-    color: magenta;
+    color: #111
 }
 
+.container {
+    width: 100vw;
+    padding: .5rem;
+    overflow: scroll;
+}
+
+.stage-container {
+    display: flex;
+    width: 900px;
+    margin: 0 auto;
+    justify-content: space-between;
+}
