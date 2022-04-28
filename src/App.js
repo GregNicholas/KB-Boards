@@ -1,11 +1,11 @@
-import KBClass from './components/KB/KBClass'
+import KBBoard from './components/KB/KBBoard'
 import './App.css';
 
 function App() {
   return (
     <div className="App">
       <h1>KB Boards</h1>
-      <KBClass />
+      <KBBoard />
     </div>
   );
 }
