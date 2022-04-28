@@ -1,3 +1,4 @@
+import TaskCard from "../TaskCard/TaskCard"
 import "./Stage.css"
 import { FaArrowRight, FaArrowLeft } from 'react-icons/fa';
 import { TiDelete } from 'react-icons/ti'
@@ -11,8 +12,7 @@ const Stage = ({ tasks, i, stages, handleMoveBack, handleMoveForward, handleDele
                 <ul>
                   {tasks.map((task, index) => {
                     return (
-                      <li key={`${i}${index}`}>
-                        <div>
+                      <li className="task-card" key={`${i}${index}`}>
                           <span
                             data-testid={`${task.name
                               .split(" ")
@@ -23,6 +23,7 @@ const Stage = ({ tasks, i, stages, handleMoveBack, handleMoveForward, handleDele
                           <div>
                             {task.stage > 0 && (
                               <button
+                                className="move-btn"
                                 onClick={() =>
                                   handleMoveBack(task.name, task.stage)
                                 }
@@ -33,6 +34,7 @@ const Stage = ({ tasks, i, stages, handleMoveBack, handleMoveForward, handleDele
                             )}
                             {task.stage < stages.length - 1 && (
                               <button
+                                className="move-btn"
                                 onClick={() =>
                                   handleMoveForward(task.name, task.stage)
                                 }
@@ -41,11 +43,10 @@ const Stage = ({ tasks, i, stages, handleMoveBack, handleMoveForward, handleDele
                                 <i><FaArrowRight /></i>
                               </button>
                             )}
-                            <button onClick={() => handleDelete(task.name)}>
+                            <button className="delete-btn" onClick={() => handleDelete(task.name)}>
                               <i><TiDelete /></i>
                             </button>
                           </div>
-                        </div>
                       </li>
                     );
                   })}

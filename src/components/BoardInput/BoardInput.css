@@ -10,7 +10,7 @@
 
 .btn-create {
   align-items: center;
-  background-image: radial-gradient(100% 100% at 100% 0, #5adaff 0, #5468ff 100%);
+  background: linear-gradient(0.25turn, #5468ff, #5468ff,#5adaff, #5adaff);
   background-size: 300% 100%;
   background-position:left bottom;
   border: 0;
