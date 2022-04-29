@@ -1,9 +1,16 @@
+import React from "react";
 import "./BoardInput.css"
 
-const BoardInput = ({ newTaskField, updateNewTaskField, createTask }) => {
+interface InputProps {
+  newTaskField: string;
+  updateNewTaskField: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  createTask: (e: React.FormEvent<HTMLFormElement>) => void;
+}
+
+const BoardInput = ({ newTaskField, updateNewTaskField, createTask }: InputProps ) => {
     return (
       <section>
-        <form type="submit" onSubmit={createTask}>
+        <form onSubmit={createTask}>
           <input
             id="create-task-input"
             type="text"

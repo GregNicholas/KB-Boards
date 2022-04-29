@@ -1,13 +1,21 @@
-// This file has the barebones functionality, but won't be used in the production build
-// Just to demonstrate a Class component
 import React, { Component } from "react";
-import BoardInput from "../BoardInput/BoardInput.jsx";
-import Stage from "../Stage/Stage.jsx"
+// @ts-ignore
+import BoardInput from "../BoardInput/BoardInput.tsx"
+// @ts-ignore
+import Stage from "../Stage/Stage.tsx"
+// @ts-ignore
+import { Task } from "../types";
 import "./KBBoard.css";
 
-export default class KBClass extends Component {
-  constructor() {
-    super();
+type KBState = {
+  tasks: Task[],
+  newTaskField: string
+};
+
+export default class KBClass extends Component<{}, KBState> {
+  stages: string[];
+  constructor(props: {}) {
+    super(props);
     this.state = {
       tasks: [
         { name: "1", stage: 0 },
@@ -20,15 +28,15 @@ export default class KBClass extends Component {
     this.handleMoveForward = this.handleMoveForward.bind(this);
     this.handleMoveBack = this.handleMoveBack.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    
+
     this.stages = ["Backlog", "To Do", "Ongoing", "Done"];
   }
 
-  updateNewTaskField(e) {
+  updateNewTaskField(e: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ newTaskField: e.target.value });
   }
 
-  createTask(e) {
+  createTask(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     if (this.state.newTaskField) {
@@ -44,7 +52,7 @@ export default class KBClass extends Component {
     }
   }
 
-  handleMoveBack(name, stage) {
+  handleMoveBack(name: string, stage: number) {
     if (stage > 0) {
       this.setState((prevState) => {
         return {
@@ -56,7 +64,7 @@ export default class KBClass extends Component {
     }
   }
 
-  handleMoveForward(name, stage) {
+  handleMoveForward(name: string, stage: number) {
     if (stage < this.stages.length - 1)
       this.setState((prevState) => {
         return {
@@ -67,7 +75,7 @@ export default class KBClass extends Component {
       });
   }
 
-  handleDelete(name) {
+  handleDelete(name: string) {
     this.setState((prevState) => {
       return {
         tasks: prevState.tasks.filter((task) => {
@@ -80,7 +88,7 @@ export default class KBClass extends Component {
   render() {
     const { tasks } = this.state;
 
-    const stagesTasks = Array.from({ length: this.stages.length }, () => []);
+    const stagesTasks: Task[][] = Array.from({ length: this.stages.length }, () => []);
     for (let task of tasks) {
       const stage = task.stage;
       stagesTasks[stage].push(task);
@@ -88,6 +96,7 @@ export default class KBClass extends Component {
 
     return (
       <div>
+        <h1>Greg's KB Board</h1>
         <BoardInput
           newTaskField={this.state.newTaskField}
           updateNewTaskField={this.updateNewTaskField}
@@ -98,6 +107,7 @@ export default class KBClass extends Component {
             {stagesTasks.map((tasks, i) => {
               return (
                 <Stage 
+                  key={`${i}`}
                   stages={this.stages} 
                   tasks={tasks} 
                   i={i} 
@@ -113,54 +123,3 @@ export default class KBClass extends Component {
     );
   }
 }
-
-
-{/* <div>
-          {stagesTasks.map((tasks, i) => {
-            return (
-              <div key={`${i}`}>
-                <div>
-                  <h4>{this.stages[i]}</h4>
-                  <ul>
-                    {tasks.map((task, index) => {
-                      return (
-                        <li key={`${i}${index}`}>
-                          <div>
-                            <span
-                              data-testid={`${task.name
-                                .split(" ")
-                                .join("-")}-name`}
-                            >
-                              {task.name}
-                            </span>
-                            <div>
-                              <button
-                                onClick={() =>
-                                  this.handleMoveBack(task.name, task.stage)
-                                }
-                              >
-                                <i>arrow_back</i>
-                              </button>
-                              <button
-                                onClick={() =>
-                                  this.handleMoveForward(task.name, task.stage)
-                                }
-                              >
-                                <i>arrow_forward</i>
-                              </button>
-                              <button
-                                onClick={() => this.handleDelete(task.name)}
-                              >
-                                <i>delete</i>
-                              </button>
-                            </div>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-              </div>
-            );
-          })}
-        </div> */}
