@@ -1,7 +1,9 @@
 // This file has the barebones functionality, but won't be used in the production build
 // Just to demonstrate a Class component
 import React, { Component } from "react";
-import "./KB.css";
+import BoardInput from "../BoardInput/BoardInput.jsx";
+import Stage from "../Stage/Stage.jsx"
+import "./KBBoard.css";
 
 export default class KBClass extends Component {
   constructor() {
@@ -13,14 +15,22 @@ export default class KBClass extends Component {
       ],
       newTaskField: ""
     };
-    this.stagesNames = ["Backlog", "To Do", "Ongoing", "Done"];
+    this.updateNewTaskField = this.updateNewTaskField.bind(this);
+    this.createTask = this.createTask.bind(this);
+    this.handleMoveForward = this.handleMoveForward.bind(this);
+    this.handleMoveBack = this.handleMoveBack.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
+    
+    this.stages = ["Backlog", "To Do", "Ongoing", "Done"];
   }
 
   updateNewTaskField(e) {
     this.setState({ newTaskField: e.target.value });
   }
 
-  createTask() {
+  createTask(e) {
+    e.preventDefault();
+
     if (this.state.newTaskField) {
       this.setState((prevState) => {
         return {
@@ -39,11 +49,7 @@ export default class KBClass extends Component {
       this.setState((prevState) => {
         return {
           tasks: prevState.tasks.map((task) => {
-            if (task.name === name) {
-              return { name: name, stage: stage - 1 };
-            } else {
-              return task;
-            }
+              return task.name === name ? { name: name, stage: stage - 1 } : task;
           })
         };
       });
@@ -51,15 +57,11 @@ export default class KBClass extends Component {
   }
 
   handleMoveForward(name, stage) {
-    if (stage < this.stagesNames.length - 1)
+    if (stage < this.stages.length - 1)
       this.setState((prevState) => {
         return {
           tasks: prevState.tasks.map((task) => {
-            if (task.name === name) {
-              return { name: name, stage: stage + 1 };
-            } else {
-              return task;
-            }
+              return task.name === name ? { name: name, stage: stage + 1 } : task;
           })
         };
       });
@@ -78,36 +80,47 @@ export default class KBClass extends Component {
   render() {
     const { tasks } = this.state;
 
-    let stagesTasks = [];
-    for (let i = 0; i < this.stagesNames.length; ++i) {
-      stagesTasks.push([]);
-    }
+    const stagesTasks = Array.from({ length: this.stages.length }, () => []);
     for (let task of tasks) {
-      const stageId = task.stage;
-      stagesTasks[stageId].push(task);
+      const stage = task.stage;
+      stagesTasks[stage].push(task);
     }
 
     return (
       <div>
-        <section>
-          <input
-            id="create-task-input"
-            type="text"
-            placeholder="New task name"
-            value={this.state.newTaskField}
-            onChange={(e) => this.updateNewTaskField(e)}
-          />
-          <button type="submit" onClick={() => this.createTask()}>
-            Create task
-          </button>
-        </section>
+        <BoardInput
+          newTaskField={this.state.newTaskField}
+          updateNewTaskField={this.updateNewTaskField}
+          createTask={this.createTask}
+        />
+        <div className="container">
+          <div className="stage-container">
+            {stagesTasks.map((tasks, i) => {
+              return (
+                <Stage 
+                  stages={this.stages} 
+                  tasks={tasks} 
+                  i={i} 
+                  handleMoveBack={this.handleMoveBack}
+                  handleMoveForward={this.handleMoveForward} 
+                  handleDelete={this.handleDelete} 
+                />
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
 
-        <div>
+
+{/* <div>
           {stagesTasks.map((tasks, i) => {
             return (
               <div key={`${i}`}>
                 <div>
-                  <h4>{this.stagesNames[i]}</h4>
+                  <h4>{this.stages[i]}</h4>
                   <ul>
                     {tasks.map((task, index) => {
                       return (
@@ -150,8 +163,4 @@ export default class KBClass extends Component {
               </div>
             );
           })}
-        </div>
-      </div>
-    );
-  }
-}
+        </div> */}

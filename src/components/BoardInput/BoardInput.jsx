@@ -3,7 +3,7 @@ import "./BoardInput.css"
 const BoardInput = ({ newTaskField, updateNewTaskField, createTask }) => {
     return (
       <section>
-        <form type="submit" onClick={createTask}>
+        <form type="submit" onSubmit={createTask}>
           <input
             id="create-task-input"
             type="text"
@@ -11,7 +11,7 @@ const BoardInput = ({ newTaskField, updateNewTaskField, createTask }) => {
             value={newTaskField}
             onChange={updateNewTaskField}
           />
-          <button type="submit" class="btn-create" disabled={!newTaskField}>
+          <button type="submit" className="btn-create" disabled={!newTaskField}>
             Create task
           </button>
         </form>
