@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-// @ts-ignore
-import BoardInput from "../BoardInput/BoardInput.tsx"
-// @ts-ignore
-import Stage from "../Stage/Stage.tsx"
+import BoardInput from "../BoardInput/BoardInput"
+import Stage from "../Stage/Stage"
 // @ts-ignore
 import { Task } from "../types";
 import "./KBBoard.css";
