@@ -1,5 +1,5 @@
-// import KBBoard from './components/KB/KBBoard'
-import KBClass from './components/KB/KBClass.tsx'
+import React from 'react';
+import KBClass from './components/KB/KBClass'
 import './App.css';
 
 function App() {

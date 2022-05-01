@@ -1,7 +1,5 @@
 import React from "react";
-// @ts-ignore
-import TaskCard from "../TaskCard/TaskCard.tsx"
-// @ts-ignore
+import TaskCard from "../TaskCard/TaskCard"
 import "./Stage.css"
 
 interface StageProps {
