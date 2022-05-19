@@ -1,13 +1,13 @@
 import React, { Component } from "react";
-import BoardInput from "../BoardInput/BoardInput"
-import Stage from "../Stage/Stage"
+import BoardInput from "../BoardInput/BoardInput";
+import Stage from "../Stage/Stage";
 // @ts-ignore
 import { Task } from "../types";
 import "./KBBoard.css";
 
 type KBState = {
-  tasks: Task[],
-  newTaskField: string
+  tasks: Task[];
+  newTaskField: string;
 };
 
 export default class KBClass extends Component<{}, KBState> {
@@ -25,6 +25,7 @@ export default class KBClass extends Component<{}, KBState> {
     this.createTask = this.createTask.bind(this);
     this.handleMoveForward = this.handleMoveForward.bind(this);
     this.handleMoveBack = this.handleMoveBack.bind(this);
+    this.handleEdit = this.handleEdit.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
 
     this.stages = ["Backlog", "To Do", "Ongoing", "Done"];
@@ -55,7 +56,7 @@ export default class KBClass extends Component<{}, KBState> {
       this.setState((prevState) => {
         return {
           tasks: prevState.tasks.map((task) => {
-              return task.name === name ? { name: name, stage: stage - 1 } : task;
+            return task.name === name ? { name: name, stage: stage - 1 } : task;
           })
         };
       });
@@ -67,10 +68,24 @@ export default class KBClass extends Component<{}, KBState> {
       this.setState((prevState) => {
         return {
           tasks: prevState.tasks.map((task) => {
-              return task.name === name ? { name: name, stage: stage + 1 } : task;
+            return task.name === name ? { name: name, stage: stage + 1 } : task;
           })
         };
       });
+  }
+
+  handleEdit(name: string, newName: string) {
+    console.log(newName);
+
+    this.setState((prevState) => {
+      return {
+        tasks: prevState.tasks.map((task) => {
+          return task.name === name
+            ? { name: newName, stage: task.stage }
+            : task;
+        })
+      };
+    });
   }
 
   handleDelete(name: string) {
@@ -86,7 +101,10 @@ export default class KBClass extends Component<{}, KBState> {
   render() {
     const { tasks } = this.state;
 
-    const stagesTasks: Task[][] = Array.from({ length: this.stages.length }, () => []);
+    const stagesTasks: Task[][] = Array.from(
+      { length: this.stages.length },
+      () => []
+    );
     for (let task of tasks) {
       const stage = task.stage;
       stagesTasks[stage].push(task);
@@ -99,19 +117,21 @@ export default class KBClass extends Component<{}, KBState> {
           newTaskField={this.state.newTaskField}
           updateNewTaskField={this.updateNewTaskField}
           createTask={this.createTask}
+          hasButton={true}
         />
         <div className="container">
           <div className="stage-container">
             {stagesTasks.map((tasks, i) => {
               return (
-                <Stage 
+                <Stage
                   key={`${i}`}
-                  stages={this.stages} 
-                  tasks={tasks} 
-                  i={i} 
+                  stages={this.stages}
+                  tasks={tasks}
+                  i={i}
                   handleMoveBack={this.handleMoveBack}
-                  handleMoveForward={this.handleMoveForward} 
-                  handleDelete={this.handleDelete} 
+                  handleMoveForward={this.handleMoveForward}
+                  handleEdit={this.handleEdit}
+                  handleDelete={this.handleDelete}
                 />
               );
             })}
