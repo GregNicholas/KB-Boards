@@ -10,6 +10,7 @@ h4 {
     width: 200px;
     height: fit-content;
     box-shadow: rgba(45, 35, 66, .4) 0 2px 4px;
+    background-color: white;
 }
 
 ul {
